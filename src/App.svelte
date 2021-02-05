@@ -20,9 +20,9 @@
   let prevY = 0;
 
   let labels = new Map();
-  labels.set('Rectangle', []);
+  labels.set('Wiggle', []);
   labels.set('Circle', []);
-  labels.set('Line', []);
+  labels.set('Misc', []);
   $: canTrain = checkCanTrain(labels);
   let modelCanBeSaved = false;
   let newLabel = '';
@@ -370,7 +370,7 @@
 
 <div class="container">
   <h1 class="title is-3">
-    Simple Sketch Recognition with
+    Custom Sketch Recognition with
     <a href="https://ml5js.org/" target="_blank">ML5</a>
   </h1>
 
