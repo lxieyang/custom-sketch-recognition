@@ -58,6 +58,8 @@
     // let canvasWidth = 200;
     // let canvasHeight = 150;
 
+    const samplingInterval = 50; // 50 ms
+
     p5.setup = () => {
       canvas = p5.createCanvas(canvasWidth, canvasHeight);
       canvas.parent('canvas-holder');
@@ -82,7 +84,7 @@
 
       prevX = p5.mouseX;
       prevY = p5.mouseY;
-    }, 50);
+    }, samplingInterval);
 
     // p5.touchMoved = () => {
     //   console.log('move');
@@ -122,8 +124,6 @@
     //   event.returnValue = msg;
     //   return msg;
     // });
-
-    console.log('nice');
 
     featureExtractor = ml5.featureExtractor('MobileNet', { numLabels: Array.from(labels.keys()).length }, () => {
       console.log('MobileNet loaded...');
@@ -287,8 +287,8 @@
   }
 
   #canvas-holder {
-    width: 80px;
-    height: 80px;
+    width: 120px;
+    height: 120px;
     margin-right: 10px;
   }
 
@@ -370,7 +370,7 @@
 
 <div class="container">
   <h1 class="title is-3">
-    Custom Sketch Recognition with
+    Training Custom Gesture Recognition with
     <a href="https://ml5js.org/" target="_blank">ML5</a>
   </h1>
 
