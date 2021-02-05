@@ -1,3 +1,5 @@
+![preview](preview/preview-1.png)
+
 [https://custom-sketch-recognition.netlify.app/](https://custom-sketch-recognition.netlify.app/)
 
 # svelte app
