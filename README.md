@@ -1,9 +1,3 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/220e2a84-5869-4045-8468-404ec95bffb2/deploy-status)](https://app.netlify.com/sites/sketch-recognition-with-ml5/deploys)
-
-_Looking for a shareable component template? Go here --> [sveltejs/component-template](https://github.com/sveltejs/component-template)_
-
----
-
 # svelte app
 
 This is a project template for [Svelte](https://svelte.dev) apps. It lives at https://github.com/sveltejs/template.
