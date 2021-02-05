@@ -9,11 +9,15 @@
   };
 
   let myp5;
-  let canvasWidth = 200;
-  let canvasHeight = 150;
+  let canvasWidth = 120;
+  let canvasHeight = 120;
   let featureExtractor;
   let classifier;
   let modelStatus = '';
+
+  let touchStarted = false;
+  let prevX = 0;
+  let prevY = 0;
 
   let labels = new Map();
   labels.set('Rectangle', []);
@@ -58,21 +62,45 @@
       canvas = p5.createCanvas(canvasWidth, canvasHeight);
       canvas.parent('canvas-holder');
       p5.background('white');
-      p5.strokeWeight(6);
+      p5.strokeWeight(1);
       p5.stroke(0);
     };
 
-    p5.touchMoved = () => {
-      p5.line(p5.mouseX, p5.mouseY, p5.pmouseX, p5.pmouseY);
-      return false;
+    p5.touchStarted = event => {
+      if (document.querySelector('#canvas-holder').contains(event.target)) {
+        touchStarted = true;
+        console.log('started');
+      }
     };
 
+    setInterval(() => {
+      if (touchStarted === false) return;
+
+      if (!(prevX === 0 && prevY === 0)) {
+        p5.line(prevX, prevY, p5.mouseX, p5.mouseY);
+      }
+
+      prevX = p5.mouseX;
+      prevY = p5.mouseY;
+    }, 50);
+
+    // p5.touchMoved = () => {
+    //   console.log('move');
+    //   p5.line(p5.mouseX, p5.mouseY, p5.pmouseX, p5.pmouseY);
+    //   return false;
+    // };
+
     p5.touchEnded = () => {
+      touchStarted = false;
+      console.log('ended');
       if (p5.mouseX >= 0 && p5.mouseY >= 0 && p5.mouseX <= canvasWidth && p5.mouseY <= canvasHeight) {
         if (mode === 'test' && classifier && classify) {
           classify();
         }
       }
+
+      prevX = 0;
+      prevY = 0;
     };
 
     p5.clearCanvas = () => {
@@ -88,12 +116,23 @@
 
     myp5 = new p5(sketch);
 
-    window.addEventListener('beforeunload', event => {
-      let msg = 'Are you sure you want to leave?';
-      // Chrome requires returnValue to be set.
-      event.returnValue = msg;
-      return msg;
+    // window.addEventListener('beforeunload', event => {
+    //   let msg = 'Are you sure you want to leave?';
+    //   // Chrome requires returnValue to be set.
+    //   event.returnValue = msg;
+    //   return msg;
+    // });
+
+    console.log('nice');
+
+    featureExtractor = ml5.featureExtractor('MobileNet', { numLabels: Array.from(labels.keys()).length }, () => {
+      console.log('MobileNet loaded...');
+      classifier.load('./model.json').then(_ => {
+        console.log('Custom model ready!');
+      });
     });
+
+    classifier = featureExtractor.classification();
   });
 
   function addNewLabel() {
@@ -149,6 +188,7 @@
   function classify() {
     let img = document.createElement('img');
     img.src = document.querySelector('#canvas-holder canvas').toDataURL();
+
     classifier.classify(img, (err, results) => {
       if (err) {
         console.log(err);
@@ -247,8 +287,8 @@
   }
 
   #canvas-holder {
-    width: 200px;
-    height: 160px;
+    width: 80px;
+    height: 80px;
     margin-right: 10px;
   }
 
